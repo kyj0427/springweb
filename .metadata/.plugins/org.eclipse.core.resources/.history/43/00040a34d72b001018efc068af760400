@@ -1,0 +1,83 @@
+
+$(function(){
+
+	// 댓글추가 버튼이 눌렸을 때
+	$('#replyConfirm').click(function(){
+		
+		/*var params = {
+				bno : $('#bno').val()
+				, replyer : $('#replyer').val()
+				, reply : $('#reply').val()
+		}*/
+		
+		var params = $('#replyFrm').serialize();
+		
+		//console.log(params);
+	
+		$.ajax({
+			type : 'post'
+			, url : '../replies/new'
+			, data : params
+			, success : function(result){
+					//alert('댓글입력성공:'+ result);
+					$('#reply').val('');
+					replyList();
+			}
+			, error : function(err){
+					alert('댓글입력실패');
+					console.log(err);
+			}
+		}); // end of ajax
+	
+	}); // end of click
+
+	// 댓글목록 가져오기
+	replyList();
+	function replyList(){
+		$.ajax({
+			type:'get'
+			,url:'../replies'
+			,data:{ bno : $('#bno').val()}
+			,dataType:'json'
+			,success: function(result){
+				//alert('성공');
+				//console.log(result);
+				
+				var replyList = $('#replyList');
+				
+				for( row of result ){
+					console.log(row);
+					var tr = $('<tr/>');
+					
+					var rno = $('<td/>').html(row['rno']);
+					tr.append(rno);
+
+					var replyer = $('<td/>').html(row['replyer']);
+					tr.append(replyer);
+					
+					replyList.appen(tr);
+				}
+				
+			}
+			,error: function(err){
+				alert('검색실패');
+				console.log(err);
+			}
+			
+		}); // end of ajax
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+});

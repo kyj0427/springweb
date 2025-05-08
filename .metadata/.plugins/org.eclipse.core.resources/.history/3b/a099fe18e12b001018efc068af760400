@@ -1,0 +1,115 @@
+
+$(function(){
+
+	// 댓글추가 버튼이 눌렸을 때
+	$('#replyConfirm').click(function(){
+		
+		/*var params = {
+				bno : $('#bno').val()
+				, replyer : $('#replyer').val()
+				, reply : $('#reply').val()
+		}*/
+		
+		var params = $('#replyFrm').serialize();
+		
+		//console.log(params);
+	
+		$.ajax({
+			type : 'post'
+			, url : '../replies/new'
+			, data : params
+			, success : function(result){
+					//alert('댓글입력성공:'+ result);
+					$('#reply').val('');
+					replyList();
+			}
+			, error : function(err){
+					alert('댓글입력실패');
+					console.log(err);
+			}
+		}); // end of ajax
+	
+	}); // end of click
+
+	// 댓글목록 가져오기
+	replyList();
+	function replyList(){
+		$.ajax({
+			type:'get'
+			,url:'../replies'
+			,data:{ bno : $('#bno').val()}
+			,dataType:'json'
+			,success: function(result){
+				//alert('성공');
+				//console.log(result);
+				
+				var replyList = $('#replyList');
+				
+				replyList.empty();
+				
+				for( row of result ){
+					//console.log(row);
+					var tr = $('<tr/>');
+					
+					var rno = $('<td/>').html(row['rno']);
+					tr.append(rno);
+					
+					var replyer = $('<td/>').html(row['replyer']);
+					tr.append(replyer);
+					
+					var reply = $('<td/>').html(row['reply']);
+					tr.append(reply);
+					
+					// 수정버튼과 삭제버튼 추가
+					tr.append('<td><button class="modify">수정</button></td>');
+					tr.append('<td><button class="delete">삭제</button></td>');
+					
+					replyList.append(tr);
+				}
+				
+			}
+			,error: function(err){
+				alert('검색실패');
+				console.log(err);
+			}
+			
+		}); // end of ajax
+	}
+
+	// 동적 '삭제'버튼 이벤트 클릭시
+	$('#replyList').on('click', '.delete', function(){
+		
+		var rno = $(this).parents('tr').children().eq(0).text();
+		//alert(rno);
+		
+		$.ajax({
+			type:'delete'
+			,url:'../replies/'+rno
+			,success:function(result){
+				replyList();
+			}
+			,error:function(err){
+				alert('삭제실패');
+				console.log(err);
+			}			
+		});
+		
+	});
+
+	// 수정버튼이 눌렸을 때
+	$('#replyList').on('click' , '.modify',function(){
+		var btn = $(this); 
+		
+		if( $(btn).text() == '수정'){
+		
+		}else if($(btn).text() == '수정하기'){
+		
+		}
+	
+	}); //end
+	
+
+
+
+
+});
