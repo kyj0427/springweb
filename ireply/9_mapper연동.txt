@@ -1,0 +1,19 @@
+
+0. DAOImpl 클래스를 제거 
+
+1. DAO 인터페이스 
+
+	- @Mapper
+	
+2.	Mapper xml 파일
+
+	- namespace="DAO경로"
+	- namespace="com.javassem.dao.BoardDAO"
+
+3. mapper 파일 위치 변경
+
+	- 기본패키지 아래로 이동 (com.javassem.mappers로 이동)
+	- root-context에서 매퍼위치 변경 
+
+4. 스프링마이바티즈의 기본패키지 지정
+

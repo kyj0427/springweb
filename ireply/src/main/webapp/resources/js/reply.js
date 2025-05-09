@@ -1,6 +1,6 @@
 
 $(function(){
-
+	
 	// 댓글추가 버튼이 눌렸을 때
 	$('#replyConfirm').click(function(){
 		
@@ -148,3 +148,4 @@ $(function(){
 
 	
 });
+
